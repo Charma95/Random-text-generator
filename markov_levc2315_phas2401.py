@@ -86,7 +86,7 @@ class Auteur:
       while (a):
           a = f.read().lower()
           b = "".join([char if char not in PONC else " " for char in a]).split()
-          c = [word for word in b if len(word) > n]
+          c = [word for word in b if len(word) > m]
           for i in range(len(c) - 1):
               check = " ".join([c[i], c[i + 1]])
               if i in list:
