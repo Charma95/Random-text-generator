@@ -64,21 +64,21 @@ PONC = ["!", '"', "'", ")", "(", ",", ".", ";", ":", "?", "-", "_"]
 
 ###  Vous devriez inclure vos classes et méthodes ici, qui seront appellées à partir du main
 class Auteur:
-    def __init__(self, author, path, n):
+    def __init__(self, author, path, m):
         self.author = author
         self.path = args.d
-        self.n = n
+        self.m = m
         self.dictionnary = {}
-        self.buildDictionnary(n)
+        self.buildDictionnary(m)
 
 ## Cette methode fait un dictionnaire pour tous les auteurs dans le dossier
-    def classifyAuthor(self, n):
+    def classifyAuthor(self, m):
         for file in self.path:
-            new_dict = self.buildDictionnary(file, n)
+            new_dict = self.buildDictionnary(file, m)
             print("{}is done".format(file))
 
 ## Cette fonction fait un n-grammes pour tous les auteurs
-    def buildDictionnary(inFile, n):
+    def buildDictionnary(inFile, m):
       f = open(inFile)
       a = true
       list = {}
@@ -98,23 +98,43 @@ class Auteur:
 
 ## Cette methode imprime les dictionnaires
     def view(self, vec=0):
-        print("This is {} at {}".format(self.name, self.path))
+        print("This is {} at {}".format(self.author, self.path))
         if vec:
-            print(self.vecteur)
+            print(self.dictionnary)
 
 ## Cette methode compare les auteurs et trouvent les distances
     def comparer(self, auteur, file, m):
-        texte = self.buildDictionnary(file, n)
+        texte = self.buildDictionnary(file, m)
         norm_a = {x: y/len(norm_a) for x, y in auteur.items() if x in texte}
         norm_t = {x: y/len(norm_t) for x, y in texte.items() if x in auteur}
         return math.sqrt(reduce(lambda x, y: x+y, [(norm_a[x]-norm_t[x])**2 for x in norm_a.keys()]))
 
 ## Cette methode trouve le rang de l'occurence
-    def get_rank(self, word):
-        if word in self.vecteur:
-            print("{} has a rank of {} for {}".format(word, self.vecteur[word], self.name))
+    def getRank(self, word):
+        if word in self.dictionnary:
+            print("{} has a rank of {} for {}".format(word, self.dictionnary[word], self.author))
         else:
-            print("The word {} is not present for {}".format(word, self.name))
+            print("The word {} is not present for {}".format(word, self.author))
+
+## Cette methode mixe tous les n-grammes
+    def mixerAuthor(self, new_dict):
+        for i, j in new_dict.items():
+            if i in self.dictionnary:
+                self.dictionnary[i] += new_dict[i]
+            else:
+                self.dictionnary.update({i:j})
+
+## Cette methode fait de lart??
+    def makeArts(self, words, m, title = 0):
+        words = words//m
+        if title == 0:
+            title = "Essaie sur {}".format(self.name)
+        f = open(title)
+        for i in words:
+            f.write("word")
+        f.close()
+
+
 
 ### Main: lecture des paramètres et appel des méthodes appropriées
 ###
