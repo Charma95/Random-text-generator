@@ -62,7 +62,7 @@ from functools import reduce
 ### Ajouter ici les signes de ponctuation à retirer
 PONC = ["!", '"', "'", ")", "(", ",", ".", ";", ":", "?", "-", "_"]
 
-###  Vous devriez inclure vos classes et méthodes ici, qui seront appellées à partir du main
+##  Vous devriez inclure vos classes et méthodes ici, qui seront appellées à partir du main
 class Auteur:
     def __init__(self, author, path, m):
         self.author = author
@@ -72,28 +72,38 @@ class Auteur:
         self.buildDictionnary(m)
 
 ## Cette methode fait un dictionnaire pour tous les auteurs dans le dossier
-    def classifyAuthor(self, m):
+    def classifyAuthor(self):
+
+
+## Cette methode fait
+    def listText(self,m):
+        m_list = []
+        i = 0
         for file in self.path:
             new_dict = self.buildDictionnary(file, m)
-            print("{}is done".format(file))
+            m_list[i] = new_dict
+            i += 1
+        return m_list
 
-## Cette fonction fait un n-grammes pour tous les auteurs
+## Cette methode fait un n-grammes pour tous les auteurs
     def buildDictionnary(inFile, m):
-      f = open(inFile)
-      a = true
-      list = {}
+      f = open(inFile, encoding = "utf8")
+      list = {}  ## dict
       global PONC
-      while (a):
-          a = f.read().lower()
-          b = "".join([char if char not in PONC else " " for char in a]).split()
-          c = [word for word in b if len(word) > m]
-          for i in range(len(c) - 1):
-              check = " ".join([c[i], c[i + 1]])
-              if i in list:
-                  list[check] += 1
-              else:
-                  list[check] = 1
+      a = f.read().lower()
+      b = "".join([char if char not in PONC else " " for char in a]).split()
+      c = [word for word in b if len(word) > m]
+      for i in range(len(c) - 1):
+          check = " ".join([word for word in c[i -m : i]]).lower()
+          if i in list:
+              list[check] += 1
+          else:
+              list[check] = 1
       f.close()
+      n_mots = len(c)
+      for j in range(len(list)):
+          list[j] /= n_mots
+
       return list
 
 ## Cette methode imprime les dictionnaires
@@ -125,7 +135,7 @@ class Auteur:
                 self.dictionnary.update({i:j})
 
 ## Cette methode fait de lart??
-    def makeArts(self, words, m, title = 0):
+    def generateText(self, words, m, title = 0):
         words = words//m
         if title == 0:
             title = "Essaie sur {}".format(self.name)
