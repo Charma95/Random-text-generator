@@ -71,18 +71,19 @@ class Auteur:
         self.dictionnary = {}
         self.buildDictionnary(m)
 
-def vector_author(self,m):
-    for file in self.path.glob("*.txt"):
-        list_text.append(buildDictionnary(file,m))
-        mergeAuthor(self.m_list[len(self.m_list - 1)])
-    print("{}is done".format(file))
+    def vector_author(self,m):
+        for file in self.path.glob("*.txt"):
+            list_text.append(buildDictionnary(file,m))
+            mergeAuthor(self.m_list[len(self.m_list - 1)])
+        print("{}is done".format(file))
 
-    self.dictionnary = normalise_dict(self.dictionnary)
+        self.dictionnary = normalise_dict(self.dictionnary)
 
 ## Cette methode normalise le mega dictionnaire
     def normalise_dict(dict, list):
         for k in range(len(dict)):
             dict[k] /= len(list)
+        return dict
 
 
 ## Cette methode fait
@@ -143,7 +144,7 @@ def vector_author(self,m):
                 self.dictionnary[i] += new_dict[i]
             else:
                 self.dictionnary.update({i:j})
-    return self.dictionnary
+        return self.dictionnary
 
 
 
@@ -228,3 +229,8 @@ if __name__ == "__main__":
             print("    " + aut[-1])
 
 ### À partir d'ici, vous devriez inclure les appels à votre code
+        auteur = Auteur()
+        auteur.vector_author(1)
+        auteur.getRank("le")
+
+
