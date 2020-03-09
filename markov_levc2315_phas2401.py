@@ -71,8 +71,18 @@ class Auteur:
         self.dictionnary = {}
         self.buildDictionnary(m)
 
-## Cette methode fait un dictionnaire pour tous les auteurs dans le dossier
-    def classifyAuthor(self):
+def vector_author(self,m):
+    for file in self.path.glob("*.txt"):
+        list_text.append(buildDictionnary(file,m))
+        mergeAuthor(self.m_list[len(self.m_list - 1)])
+    print("{}is done".format(file))
+
+    self.dictionnary = normalise_dict(self.dictionnary)
+
+## Cette methode normalise le mega dictionnaire
+    def normalise_dict(dict, list):
+        for k in range(len(dict)):
+            dict[k] /= len(list)
 
 
 ## Cette methode fait
@@ -113,7 +123,7 @@ class Auteur:
             print(self.dictionnary)
 
 ## Cette methode compare les auteurs et trouvent les distances
-    def comparer(self, auteur, file, m):
+    def compare(self, auteur, file, m):
         texte = self.buildDictionnary(file, m)
         norm_a = {x: y/len(norm_a) for x, y in auteur.items() if x in texte}
         norm_t = {x: y/len(norm_t) for x, y in texte.items() if x in auteur}
@@ -127,12 +137,16 @@ class Auteur:
             print("The word {} is not present for {}".format(word, self.author))
 
 ## Cette methode mixe tous les n-grammes
-    def mixerAuthor(self, new_dict):
+    def mergeAuthor(self, new_dict):
         for i, j in new_dict.items():
             if i in self.dictionnary:
                 self.dictionnary[i] += new_dict[i]
             else:
                 self.dictionnary.update({i:j})
+    return self.dictionnary
+
+
+
 
 ## Cette methode fait de lart??
     def generateText(self, words, m, title = 0):
