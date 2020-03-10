@@ -80,15 +80,16 @@ class Auteur:
     def listText(self,m):
         m_list = []
         i = 0
-        for file in self.path:
+        for file in self.path.glob("*.txt"):
             new_dict = self.buildDictionnary(file, m)
-            m_list[i] = new_dict
+            m_list.append(new_dict)
             i += 1
+            print("{} is done".format(file))
         return m_list
 
 ## Cette methode fait un n-grammes pour tous les auteurs
-    def buildDictionnary(self,inFile, m):
-      f = open(inFile, encoding = "utf8")
+    def buildDictionnary(self, inFile, m):
+      f = open(inFile, 'r', encoding = "utf8")
       list = {}  ## dict
       global PONC
       a = f.read().lower()
@@ -102,20 +103,20 @@ class Auteur:
               list[check] = 1
       f.close()
       n_mots = len(c)
-      for j in range(len(list)):
+      for j in list.keys():
           list[j] /= n_mots
 
       return list
     
 ## Cette methode...
     def vector_author(self,m):
-        list_text = listText(m)
-        for file in self.path:
-            list_text.append(buildDictionnary(file,m))
-            mergeAuthor(self.m_list[len(self.m_list - 1)])
-        print("{}is done".format(file))
+        list_text = self.listText(m)
+        #for file in self.path.iterdir():
+            #list_text.append(self.buildDictionnary(file,m))
+            #mergeAuthor(self.m_list[len(self.m_list - 1)])
+        #print("{}is done".format(file))
 
-        self.dictionnary = normalise_dict(self.dictionnary)
+        self.dictionnary = self.normalise_dict(self.dictionnary, list_text)
 ## Cette methode imprime les dictionnaires
     def view(self, vec=0):
         print("This is {} at {}".format(self.author, self.path))
@@ -145,9 +146,6 @@ class Auteur:
                 self.dictionnary.update({i:j})
         return self.dictionnary
 
-
-
-
 ## Cette methode fait de lart??
     def generateText(self, words, m, title = 0):
         words = words//m
@@ -166,6 +164,7 @@ class Auteur:
 ###             Certains paramètres sont obligatoires ("required=True")
 ###             Ces paramètres doivent êtres fournis à python lorsque l'application est exécutée
 if __name__ == "__main__":
+    print("Je suis ici")
     parser = argparse.ArgumentParser(prog='markov_cip1_cip2.py')
     parser.add_argument('-d', required=True, help='Repertoire contenant les sous-repertoires des auteurs')
     parser.add_argument('-a', help='Auteur a traiter')
@@ -228,9 +227,20 @@ if __name__ == "__main__":
             print("    " + aut[-1])
 
 ### À partir d'ici, vous devriez inclure les appels à votre code
-    auteur = Auteur(args.a, args.d, args.m)
-    auteur.vector_author(1)
-    auteur.getRank("le")
     print("Je suis ici")
+    for author_path in Path(args.d).iterdir():
+        if author_path.name.lower() == args.a.lower():
+            auteur = Auteur(args.a, author_path, args.m)
+            break
+    #auteur = Auteur(args.a, Path(args.d), args.m)
+    print(auteur.author)
+    print(auteur.path)
+    print(auteur.m)
+    print("constructeur")
+    auteur.vector_author(args.m)
+    auteur.getRank("la")
+    print(auteur.dictionnary)
+    print("fin")
+
 
 
