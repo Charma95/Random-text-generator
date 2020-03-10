@@ -66,25 +66,15 @@ PONC = ["!", '"', "'", ")", "(", ",", ".", ";", ":", "?", "-", "_"]
 class Auteur:
     def __init__(self, author, path, m):
         self.author = author
-        self.path = args.d
+        self.path = path
         self.m = m
         self.dictionnary = {}
-        self.buildDictionnary(m)
-
-    def vector_author(self,m):
-        for file in self.path.glob("*.txt"):
-            list_text.append(buildDictionnary(file,m))
-            mergeAuthor(self.m_list[len(self.m_list - 1)])
-        print("{}is done".format(file))
-
-        self.dictionnary = normalise_dict(self.dictionnary)
 
 ## Cette methode normalise le mega dictionnaire
-    def normalise_dict(dict, list):
+    def normalise_dict(self,dict, list):
         for k in range(len(dict)):
             dict[k] /= len(list)
         return dict
-
 
 ## Cette methode fait
     def listText(self,m):
@@ -97,7 +87,7 @@ class Auteur:
         return m_list
 
 ## Cette methode fait un n-grammes pour tous les auteurs
-    def buildDictionnary(inFile, m):
+    def buildDictionnary(self,inFile, m):
       f = open(inFile, encoding = "utf8")
       list = {}  ## dict
       global PONC
@@ -116,7 +106,16 @@ class Auteur:
           list[j] /= n_mots
 
       return list
+    
+## Cette methode...
+    def vector_author(self,m):
+        list_text = listText(m)
+        for file in self.path:
+            list_text.append(buildDictionnary(file,m))
+            mergeAuthor(self.m_list[len(self.m_list - 1)])
+        print("{}is done".format(file))
 
+        self.dictionnary = normalise_dict(self.dictionnary)
 ## Cette methode imprime les dictionnaires
     def view(self, vec=0):
         print("This is {} at {}".format(self.author, self.path))
@@ -229,8 +228,9 @@ if __name__ == "__main__":
             print("    " + aut[-1])
 
 ### À partir d'ici, vous devriez inclure les appels à votre code
-        auteur = Auteur()
-        auteur.vector_author(1)
-        auteur.getRank("le")
+    auteur = Auteur(args.a, args.d, args.m)
+    auteur.vector_author(1)
+    auteur.getRank("le")
+    print("Je suis ici")
 
 
